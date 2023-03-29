@@ -12,6 +12,9 @@ class View{
     
     UTFTGLUE pantalla{0,A2,A1,A3,A4,A0};
 
+    View(){
+    }
+
     int ventanaActual;
 
     void iniciarGui();
@@ -24,9 +27,7 @@ class View{
     void cambiarCaudal(float caudal, float dosis, float delta);
     void cambiarDosis(float caudal, float dosis, float delta);
 
-  private:
-
-    void _limpiarPantalla();
+    void limpiarPantalla();
 
 };
 

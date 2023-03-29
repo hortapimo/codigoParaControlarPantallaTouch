@@ -10,13 +10,14 @@ const int ALTURA_FILA_3 = 190;
 void View::iniciarGui()
 {
   splashScreen();
+  limpiarPantalla();
   crearVentana1();
 }
 
 void View::splashScreen()
 {
-  _limpiarPantalla();
-  
+
+  pantalla.fillScr(VGA_BLUE);
   pantalla.setFont(&FreeMonoBold18pt7b);
   pantalla.print("Plamic Biotech S.A", CENTER, 150);
   delay(2000);
@@ -24,13 +25,11 @@ void View::splashScreen()
   pantalla.setFont(&FreeMonoBold12pt7b);
   pantalla.print("Drug Capsule Sintetizar", CENTER, 150);
   pantalla.print("Model: 0.1", CENTER, 200);
-  delay(2000);
+  delay(3000);
 }
 
 void View::crearVentana1(float caudal=CAUDAL_DEFAULT , float dosis=DOSIS_DEFAULT) 
 {
-  _limpiarPantalla();
-
   pantalla.setBackColor(VGA_BLUE);
   pantalla.setColor(VGA_GRAY);
   pantalla.print("Indique Caudal y Dosis", 0,10);
@@ -69,13 +68,11 @@ void View::crearVentana1(float caudal=CAUDAL_DEFAULT , float dosis=DOSIS_DEFAULT
 
 void View::crearVentana2(float caudal = CAUDAL_DEFAULT, float dosis = DOSIS_DEFAULT)
 {
-  _limpiarPantalla();
-
   pantalla.setFont(&FreeMonoBold18pt7b);
 
   pantalla.setBackColor(VGA_BLUE);
   pantalla.setColor(VGA_GRAY);
-  pantalla.print("Caudal y dosis\nindicada:", 0,10);
+  pantalla.print("Parámetros cargados:", 0,10);
 
   pantalla.print("Caudal\n[ml/min]:",0,ALTURA_FILA_2);
   pantalla.print(String(caudal,1), 200, ALTURA_FILA_2);
@@ -92,7 +89,7 @@ void View::crearVentana2(float caudal = CAUDAL_DEFAULT, float dosis = DOSIS_DEFA
 
 void View::crearVentana3()
 {
-  _limpiarPantalla();
+  limpiarPantalla();
 
   pantalla.print("Dosificando ...", CENTER, 150);
 
@@ -103,18 +100,22 @@ void View::cambiarCaudal(float caudal, float dosis, float delta)
 {
   caudal = caudal + delta;
 
-  crearVentana1(caudal = caudal, dosis = dosis);
+  pantalla.setBackColor(VGA_BLUE);
+  pantalla.setColor(VGA_GRAY);
+  pantalla.print(String(caudal,1), 150,ALTURA_FILA_2);
+
 }
 
 void View::cambiarDosis(float caudal, float dosis, float delta)
 { 
   dosis = dosis + delta;
 
-  crearVentana1(caudal = caudal,dosis=dosis);
+  pantalla.setBackColor(VGA_BLUE);
+  pantalla.setColor(VGA_GRAY);
+  pantalla.print(String(dosis,1), 150,ALTURA_FILA_3);
 }
 
-void View::_limpiarPantalla()
+void View::limpiarPantalla()
 {
-  //pantalla.InitLCD();
   pantalla.fillScr(VGA_BLUE);
 }

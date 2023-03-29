@@ -9,16 +9,17 @@ class Controlador{
   public:
 
     Model& refModel;
+    View& refVista;
 
-    Controlador(Model& model)
-      : refModel(model)
+    Controlador(Model& model, View& view)
+      : refModel(model), refVista(view)
     {}
 
-    void procesarToque(TSPoint point, View& refVista);
+    void procesarToque(TSPoint point);
     bool presionoPantalla(int presion);
 
-    void procesarToqueVentana1(TSPoint point, View& refView);
-    void procesarToqueVentana2(TSPoint point, View& refView);
+    void procesarToqueVentana1(TSPoint point);
+    void procesarToqueVentana2(TSPoint point);
 
     char lugarDondeTocoVentana1(TSPoint point);
     char lugarDondeTocoVentana2(TSPoint point);

@@ -15,7 +15,7 @@
 const float DELTA_CAUDAL = 1.0;
 const float DELTA_DOSIS = 0.5;
 
-void Controlador::procesarToque(TSPoint point, View& refVista)
+void Controlador::procesarToque(TSPoint point)
 {   
   if(presionoPantalla(point.z))
   {
@@ -23,13 +23,13 @@ void Controlador::procesarToque(TSPoint point, View& refVista)
     switch(refVista.ventanaActual)
     {
       case 1:
-        procesarToqueVentana1(point, refVista);
+        procesarToqueVentana1(point);
       break;
 
       case 2:
         Serial.println("Entro a case 2");
         delay(1000);
-        procesarToqueVentana2(point, refVista);
+        procesarToqueVentana2(point);
         
       break;  
 
@@ -45,51 +45,55 @@ bool Controlador::presionoPantalla(int presion)
   return (presion > 100);
 }
 
-void Controlador::procesarToqueVentana1(TSPoint point, View& refView)
+void Controlador::procesarToqueVentana1(TSPoint point)
 {
   switch (lugarDondeTocoVentana1(point))
   {
     case BOTON_MAS_CAUDAL:
-      refView.cambiarCaudal(refModel.caudal, refModel.dosis,DELTA_CAUDAL);
+      refVista.cambiarCaudal(refModel.caudal, refModel.dosis,DELTA_CAUDAL);
       refModel.caudal += DELTA_CAUDAL;      
     break;
 
     case BOTON_MENOS_CAUDAL:
-      refView.cambiarCaudal(refModel.caudal, refModel.dosis,-1*DELTA_CAUDAL);
+      refVista.cambiarCaudal(refModel.caudal, refModel.dosis,-1*DELTA_CAUDAL);
       refModel.caudal -= DELTA_CAUDAL; 
     break;
 
     case BOTON_MAS_DOSIS:
-      refView.cambiarDosis(refModel.caudal, refModel.dosis,DELTA_DOSIS);
+      refVista.cambiarDosis(refModel.caudal, refModel.dosis,DELTA_DOSIS);
       refModel.dosis += DELTA_DOSIS;  
     break;
 
     case BOTON_MENOS_DOSIS:
-      refView.cambiarDosis(refModel.caudal, refModel.dosis,-1*DELTA_DOSIS);
+      refVista.cambiarDosis(refModel.caudal, refModel.dosis,-1*DELTA_DOSIS);
       refModel.dosis -= DELTA_DOSIS; 
     break;
 
     case BOTON_SIGUIENTE:
-      refView.ventanaActual = 2;
-      refView.crearVentana2(refModel.caudal, refModel.dosis);
+      refVista.ventanaActual = 2;
+      refVista.limpiarPantalla();
+      refVista.crearVentana2(refModel.caudal, refModel.dosis);
     break;   
         
   }
 }
 
-void Controlador::procesarToqueVentana2(TSPoint point, View& refView)
+void Controlador::procesarToqueVentana2(TSPoint point)
 {
 
   switch (lugarDondeTocoVentana2(point))
   {
     case BOTON_REGRESAR:
-      refView.crearVentana1(refModel.caudal, refModel.dosis);
+    refVista.limpiarPantalla();
+      refVista.crearVentana1(refModel.caudal, refModel.dosis);
     break;
 
     case BOTON_INICIAR:
-      refView.crearVentana3();
+      refVista.limpiarPantalla();
+      refVista.crearVentana3();
       refModel.dosificar();
-      refView.crearVentana2(refModel.caudal, refModel.dosis);
+      refVista.limpiarPantalla();
+      refVista.crearVentana2(refModel.caudal, refModel.dosis);
     break;   
         
   }
