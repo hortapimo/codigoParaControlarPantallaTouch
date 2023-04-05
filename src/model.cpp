@@ -1,5 +1,6 @@
 #include "model.h"
 #include "Arduino.h"
+#include "Servo.h""
 
 const float PIN_PULSO_M1 = 31;
 const float PIN_DIRECCION_M1 = 33;

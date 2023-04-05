@@ -19,9 +19,11 @@ class Controlador{
     bool presionoPantalla(int presion);
 
     void procesarToqueVentana1(TSPoint point);
+    void procesarToqueVentana11(TSPoint point);
     void procesarToqueVentana2(TSPoint point);
 
     char lugarDondeTocoVentana1(TSPoint point);
+    char lugarDondeTocoVentana11(TSPoint point);
     char lugarDondeTocoVentana2(TSPoint point);
 
 

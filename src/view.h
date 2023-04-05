@@ -4,6 +4,7 @@
 #include <UTFTGLUE.h>
 
 const float CAUDAL_DEFAULT = 1.0;
+const float DOSIS_DEFAULT_DESCARTE = 0.2;
 const float DOSIS_DEFAULT = 1.0;
 
 class View{
@@ -21,11 +22,13 @@ class View{
 
     void splashScreen();
     void crearVentana1(float caudal = CAUDAL_DEFAULT, float dosis = DOSIS_DEFAULT);
+    void crearVentana11(float dosisDescarte = DOSIS_DEFAULT_DESCARTE);
     void crearVentana2(float caudal = CAUDAL_DEFAULT, float dosis = DOSIS_DEFAULT);
     void crearVentana3();
 
     void cambiarCaudal(float caudal, float dosis, float delta);
     void cambiarDosis(float caudal, float dosis, float delta);
+    void cambiarDosisDescarte(float dosis, float delta);
 
     void limpiarPantalla();
 
