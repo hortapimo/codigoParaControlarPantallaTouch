@@ -88,20 +88,25 @@ void Controlador::procesarToqueVentana11(TSPoint point)
 switch (lugarDondeTocoVentana11(point))
   {
     case BOTON_MAS_DOSIS:
-      refVista.cambiarDosisDescarte(refModel.dosis,DELTA_DOSIS_DESCARTE);
+      refVista.cambiarDosisDescarte(refModel.dosisDescarte,DELTA_DOSIS_DESCARTE);
       refModel.dosisDescarte += DELTA_DOSIS_DESCARTE;  
     break;
 
     case BOTON_MENOS_DOSIS:
-      refVista.cambiarDosisDescarte(refModel.dosis,-1*DELTA_DOSIS_DESCARTE);
+      refVista.cambiarDosisDescarte(refModel.dosisDescarte,-1*DELTA_DOSIS_DESCARTE);
       refModel.dosisDescarte -= DELTA_DOSIS_DESCARTE; 
     break;
 
     case BOTON_SIGUIENTE:
       refVista.ventanaActual = 2;
       refVista.limpiarPantalla();
-      refVista.crearVentana2(refModel.dosisDescarte);
-    break;   
+      refVista.crearVentana2(refModel.caudal, refModel.dosis, refModel.dosisDescarte);
+    break;  
+
+    case BOTON_REGRESAR:
+    refVista.limpiarPantalla();
+    refVista.crearVentana1(refModel.caudal, refModel.dosis);
+    break; 
         
   }
 }
@@ -113,7 +118,7 @@ void Controlador::procesarToqueVentana2(TSPoint point)
   {
     case BOTON_REGRESAR:
     refVista.limpiarPantalla();
-      refVista.crearVentana1(refModel.caudal, refModel.dosis);
+    refVista.crearVentana11(refModel.dosisDescarte);
     break;
 
     case BOTON_INICIAR:
@@ -162,6 +167,7 @@ char Controlador::lugarDondeTocoVentana11(TSPoint point)
   {
     return BOTON_SIGUIENTE;
   }
+ 
   if ((270<point.x && point.x<330) && (60<point.y && point.y<120))
   {
     return BOTON_MAS_DOSIS;
@@ -171,6 +177,12 @@ char Controlador::lugarDondeTocoVentana11(TSPoint point)
   {
     return BOTON_MENOS_DOSIS;
   }
+  
+  if (point.x<150 && point.y > 290)
+  {
+    return BOTON_REGRESAR;
+  }
+
   else 
   {
     return NINGUN_BOTON;

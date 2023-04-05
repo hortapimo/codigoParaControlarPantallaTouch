@@ -23,7 +23,8 @@ class View{
     void splashScreen();
     void crearVentana1(float caudal = CAUDAL_DEFAULT, float dosis = DOSIS_DEFAULT);
     void crearVentana11(float dosisDescarte = DOSIS_DEFAULT_DESCARTE);
-    void crearVentana2(float caudal = CAUDAL_DEFAULT, float dosis = DOSIS_DEFAULT);
+    void crearVentana2(float caudal = CAUDAL_DEFAULT, float dosis = DOSIS_DEFAULT
+    ,float dosisDescarte = DOSIS_DEFAULT_DESCARTE);
     void crearVentana3();
 
     void cambiarCaudal(float caudal, float dosis, float delta);
