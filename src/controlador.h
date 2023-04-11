@@ -26,7 +26,6 @@ class Controlador{
     char lugarDondeTocoVentana11(TSPoint point);
     char lugarDondeTocoVentana2(TSPoint point);
 
-
 };
 
 #endif

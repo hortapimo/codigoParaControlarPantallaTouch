@@ -7,14 +7,17 @@
 #define BOTON_REGRESAR 'r'
 #define BOTON_MAS_CAUDAL 'a'
 #define BOTON_MAS_DOSIS 'b'
+#define BOTON_MAS_RELACION 'q'
 #define BOTON_MENOS_CAUDAL 'A'
 #define BOTON_MENOS_DOSIS 'B'
+#define BOTON_MENOS_RELACION 'Q'
 #define BOTON_INICIAR 'i'
 #define NINGUN_BOTON 'n'
 
 const float DELTA_CAUDAL = 1.0;
 const float DELTA_DOSIS = 0.5;
 const float DELTA_DOSIS_DESCARTE = 0.1;
+const float DELTA_RELACION = 1;
 
 void Controlador::procesarToque(TSPoint point)
 {   
@@ -77,7 +80,7 @@ void Controlador::procesarToqueVentana1(TSPoint point)
     case BOTON_SIGUIENTE:
       refVista.ventanaActual = 11;
       refVista.limpiarPantalla();
-      refVista.crearVentana11(refModel.dosisDescarte);
+      refVista.crearVentana11(refModel.dosisDescarte, refModel.relacionCaudal);
     break;   
         
   }
@@ -100,25 +103,34 @@ switch (lugarDondeTocoVentana11(point))
     case BOTON_SIGUIENTE:
       refVista.ventanaActual = 2;
       refVista.limpiarPantalla();
-      refVista.crearVentana2(refModel.caudal, refModel.dosis, refModel.dosisDescarte);
+      refVista.crearVentana2(refModel.caudal, refModel.dosis, refModel.dosisDescarte
+      , refModel.relacionCaudal);
     break;  
 
     case BOTON_REGRESAR:
-    refVista.limpiarPantalla();
-    refVista.crearVentana1(refModel.caudal, refModel.dosis);
+      refVista.limpiarPantalla();
+      refVista.crearVentana1(refModel.caudal, refModel.dosis);
     break; 
+
+    case BOTON_MAS_RELACION:
+      refVista.cambiarRelacion(refModel.relacionCaudal, DELTA_RELACION);
+      refModel.relacionCaudal += DELTA_RELACION;
+    break;
+
+    case BOTON_MENOS_RELACION:
+      refVista.cambiarRelacion(refModel.relacionCaudal, -1*DELTA_RELACION);
+      refModel.relacionCaudal -= DELTA_RELACION;
         
   }
 }
 
 void Controlador::procesarToqueVentana2(TSPoint point)
 {
-
   switch (lugarDondeTocoVentana2(point))
   {
     case BOTON_REGRESAR:
     refVista.limpiarPantalla();
-    refVista.crearVentana11(refModel.dosisDescarte);
+    refVista.crearVentana11(refModel.dosisDescarte, refModel.relacionCaudal);
     break;
 
     case BOTON_INICIAR:
@@ -126,7 +138,7 @@ void Controlador::procesarToqueVentana2(TSPoint point)
       refVista.crearVentana3();
       refModel.dosificar();
       refVista.limpiarPantalla();
-      refVista.crearVentana2(refModel.caudal, refModel.dosis);
+      refVista.crearVentana2(refModel.caudal, refModel.dosis, refModel.relacionCaudal);
     break;   
         
   }
@@ -163,21 +175,33 @@ char Controlador::lugarDondeTocoVentana1(TSPoint point)
 
 char Controlador::lugarDondeTocoVentana11(TSPoint point)
 {
+  //Boton siguiente
   if (point.x>280 && point.y > 290)
   {
     return BOTON_SIGUIENTE;
   }
- 
+
+  //Botones mas dosis descarcarte
   if ((270<point.x && point.x<330) && (60<point.y && point.y<120))
   {
     return BOTON_MAS_DOSIS;
   }
-
   if ((395<point.x && point.x<470) && (60<point.y && point.y<120))
   {
     return BOTON_MENOS_DOSIS;
   }
   
+  //Botones Relacion
+  if ((270<point.x && point.x<330) && (160<point.y && point.y<240))
+  {
+    return BOTON_MAS_RELACION;
+  }
+  if ((395<point.x && point.x<470) && (160<point.y && point.y<240))
+  {
+    return BOTON_MENOS_RELACION;
+  }
+
+  //Boton regresar
   if (point.x<150 && point.y > 290)
   {
     return BOTON_REGRESAR;

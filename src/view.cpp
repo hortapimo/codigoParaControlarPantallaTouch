@@ -66,7 +66,7 @@ void View::crearVentana1(float caudal=CAUDAL_DEFAULT , float dosis=DOSIS_DEFAULT
   ventanaActual=1;
 }
 
-void View::crearVentana11(float dosis=DOSIS_DEFAULT_DESCARTE)
+void View::crearVentana11(float dosis=DOSIS_DEFAULT_DESCARTE, float relacionCaudal = RC_DEFAULT)
 {
   pantalla.setFont(&FreeMonoBold12pt7b);
   
@@ -75,15 +75,24 @@ void View::crearVentana11(float dosis=DOSIS_DEFAULT_DESCARTE)
   pantalla.print("Indique Dosis de descarte", 0,10);
   
   pantalla.print("Dosis:\n[ml/min]", 10,ALTURA_FILA_2);
+  pantalla.print("Relación\nde caudal:", 10, ALTURA_FILA_3);
 
   pantalla.setFont(&FreeMonoBold18pt7b);
   pantalla.print(String(dosis,1), 150,ALTURA_FILA_2);
+  pantalla.print(String(relacionCaudal,1), 150,ALTURA_FILA_3);
+
 
   pantalla.setColor(VGA_RED);
+
   pantalla.fillCircle(300, ALTURA_FILA_2+10, RADIO_BOTONES_CAUDAL);
-  pantalla.drawChar(290,ALTURA_FILA_2+10,'+',1,1,1);
+  pantalla.drawChar(290,ALTURA_FILA_2+16,'+',1,1,1);
   pantalla.fillCircle(420, ALTURA_FILA_2+10, RADIO_BOTONES_CAUDAL);
-  pantalla.drawChar(410,ALTURA_FILA_2+10,'-',1,1,1);
+  pantalla.drawChar(410,ALTURA_FILA_2+16,'-',1,1,1);
+
+  pantalla.fillCircle(300, ALTURA_FILA_3+10, RADIO_BOTONES_CAUDAL);
+  pantalla.drawChar(290,ALTURA_FILA_3+16,'+',1,1,1);
+  pantalla.fillCircle(420, ALTURA_FILA_3+10, RADIO_BOTONES_CAUDAL);
+  pantalla.drawChar(410,ALTURA_FILA_3+16,'-',1,1,1);
   
   pantalla.setFont(&FreeMonoBold18pt7b);
   pantalla.setColor(VGA_OLIVE);
@@ -94,7 +103,7 @@ void View::crearVentana11(float dosis=DOSIS_DEFAULT_DESCARTE)
 }
 
 void View::crearVentana2(float caudal = CAUDAL_DEFAULT, float dosis = DOSIS_DEFAULT,
- float dosisDescarte = DOSIS_DEFAULT_DESCARTE)
+ float dosisDescarte = DOSIS_DEFAULT_DESCARTE, float relacionCaudal = RC_DEFAULT)
 {
   pantalla.setFont(&FreeMonoBold12pt7b);
 
@@ -102,12 +111,14 @@ void View::crearVentana2(float caudal = CAUDAL_DEFAULT, float dosis = DOSIS_DEFA
   pantalla.setColor(VGA_GRAY);
   pantalla.print("Parámetros cargados:", 0,10);
 
-  pantalla.print("Caudal[ml/min]:",0,70);
-  pantalla.print(String(caudal,1), 320, 70);
-  pantalla.print("Dosis[ml]:",0, 140);
-  pantalla.print(String(dosis,1), 320, 150);
-  pantalla.print("Dosis descarte[ml]:",0, 210);
-  pantalla.print(String(dosisDescarte,1), 320, 210);
+  pantalla.print("Caudal[ml/min]:",0,50);
+  pantalla.print(String(caudal,1), 320, 50);
+  pantalla.print("Dosis[ml]:",0, 110);
+  pantalla.print(String(dosis,1), 320, 110);
+  pantalla.print("Dosis descarte[ml]:",0, 170);
+  pantalla.print(String(dosisDescarte,1), 320, 170);
+  pantalla.print("Relacion Caudal:",0, 230);
+  pantalla.print(String(relacionCaudal,1), 320, 230);
 
   pantalla.setFont(&FreeMonoBold18pt7b);
   pantalla.setColor(VGA_OLIVE);
@@ -153,6 +164,15 @@ void View::cambiarDosisDescarte(float dosis, float delta)
   pantalla.setBackColor(VGA_BLUE);
   pantalla.setColor(VGA_GRAY);
   pantalla.print(String(dosis,1), 150,ALTURA_FILA_2);
+}
+
+void View::cambiarRelacion(float relacionCaudal, float delta)
+{
+  relacionCaudal = relacionCaudal + delta;
+
+  pantalla.setBackColor(VGA_BLUE);
+  pantalla.setColor(VGA_GRAY);
+  pantalla.print(String(relacionCaudal,1),150, ALTURA_FILA_3);
 }
 
 void View::limpiarPantalla()

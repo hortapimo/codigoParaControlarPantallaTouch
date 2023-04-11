@@ -1,17 +1,24 @@
 #ifndef MODEL_H
 #define MODEL_H
 
+#include "Servo.h"
+
 class Model{
   private:
     void girarMotores(long periodoPulso);
     float calcularPeriodoPulso(float caudal);
-    float calcularTiempoDosis(float caudal, float dosis);
+    float calcularTiempoDosis();
+    float calcularTiempoDescarte();
     void iniciarPines();
+    void moverServo(char posicion);
+
+    Servo servo;
 
   public:
     float caudal = 1;//ml/min
     float dosis = 1;//ml
     float dosisDescarte = 0.2;//ml/min
+    float relacionCaudal = 1; //ml/min
 
     void dosificar();
     void hacerDescarte();

@@ -2,11 +2,12 @@
 #include "Arduino.h"
 #include "Servo.h""
 
-const float PIN_PULSO_M1 = 31;
-const float PIN_DIRECCION_M1 = 33;
-const float PIN_PULSO_M2 = 35;
-const float PIN_DIRECCION_M2 = 37;
-//const float PIN_PRENDIDO = 31;
+const short int PIN_PULSO_M1 = 31;
+const short int PIN_DIRECCION_M1 = 33;
+const short int PIN_PULSO_M2 = 35;
+const short int PIN_DIRECCION_M2 = 37;
+
+const short int PIN_SERVO = 53;
 
 const float CANTIDAD_MOTORES =2;
 
@@ -15,55 +16,64 @@ const float PULSOS_VUELTA = 1600; //cm
 const float RADIO_PERIMETRO = 2.475; //cm
 const float FACTOR_CORRECCION = 0.6; //cm
 
+const char POSICION_DESCARTE = 'd';
+const char POSICION_SINTESIS = 's';
+
 void Model::dosificar()
 {
-
     iniciarPines();
     float caudalPorBomba = caudal/CANTIDAD_MOTORES;
     float periodoPulso = calcularPeriodoPulso(caudalPorBomba);
-    float tiempoDosis = calcularTiempoDosis(caudal, dosis);
+    float tiempoDosis = calcularTiempoDosis();
+    float tiempoDescarte = calcularTiempoDescarte();
+
+    moverServo(POSICION_DESCARTE);
+    delay(1000);
 
     float tiempoInicio = millis();
-    float tiempo;
+    float tiempo = millis();
 
-    Serial.println("Dosificando");
-    Serial.println("El periodo pulso es");
-    Serial.println(periodoPulso);
-    Serial.println("El tiempo de dosis es[mseg]:");
-    Serial.println(tiempoDosis);
-
-
-    while((tiempo - tiempoInicio)< tiempoDosis)
+    //Se dosifica el descarte
+    while((tiempo - tiempoInicio) < tiempoDescarte)
     {
-        for(int i=0; i<PULSOS_VUELTA/4;i++){
+        for(int i=0; i<PULSOS_VUELTA/8;i++)
+        {
+            girarMotores(periodoPulso); 
+        }
+        tiempo = millis();
+    }
+
+    moverServo(POSICION_SINTESIS);
+    tiempoInicio = millis();
+    tiempo = millis();
+
+    //Se dosifica la sintesis
+    while((tiempo - tiempoInicio) < tiempoDosis)
+    {
+        for(int i=0; i<PULSOS_VUELTA/8;i++)
+        {
            girarMotores(periodoPulso); 
         }
         tiempo = millis();
     }
 
-    Serial.println("Dosificando");
-    Serial.println("El periodo pulso es");
-    Serial.println(periodoPulso);
-/*
-    for(int i=0; i<PULSOS_VUELTA;i++){
-           girarMotor(periodoPulso); 
-    }
-*/
-    Serial.println("Termino Dosis");
+    moverServo(POSICION_DESCARTE);
 }
 
 void Model::iniciarPines()
 {
+    //Inicializacion pines Motores
+    pinMode(PIN_DIRECCION_M1, OUTPUT);
+    pinMode(PIN_DIRECCION_M2, OUTPUT);
+    digitalWrite(PIN_DIRECCION_M1, LOW);
+    digitalWrite(PIN_DIRECCION_M2, LOW);
 
-pinMode(PIN_DIRECCION_M1, OUTPUT);
-pinMode(PIN_DIRECCION_M2, OUTPUT);
-digitalWrite(PIN_DIRECCION_M1, LOW);
-digitalWrite(PIN_DIRECCION_M2, LOW);
+    pinMode(PIN_PULSO_M1,OUTPUT);
+    pinMode(PIN_PULSO_M2,OUTPUT);
 
-pinMode(PIN_PULSO_M1,OUTPUT);
-pinMode(PIN_PULSO_M2,OUTPUT);
-
-//pinMode(PIN_PRENDIDO, HIGH);
+    //Inicializacion pines Servo
+    pinMode(PIN_SERVO, OUTPUT);
+    servo.attach(PIN_SERVO);
 
 }
 
@@ -79,7 +89,6 @@ float Model::calcularPeriodoPulso(float caudal)
 
 void Model::girarMotores(long periodoPulso)
 {
-
   digitalWrite(PIN_PULSO_M1, HIGH);
   digitalWrite(PIN_PULSO_M2, HIGH);
 
@@ -89,13 +98,32 @@ void Model::girarMotores(long periodoPulso)
   digitalWrite(PIN_PULSO_M2, LOW);
 
   delayMicroseconds(periodoPulso/2); 
-
 }
 
-float Model::calcularTiempoDosis(float caudal, float dosis)
+float Model::calcularTiempoDosis()
 {
     float tiempo = dosis / caudal; // ml/(ml/min) = min
     tiempo = tiempo * 60 *1000; //en milisegundos
 
     return tiempo;
+}
+
+float Model::calcularTiempoDescarte()
+{
+    float tiempo = dosisDescarte / caudal; // ml/(ml/min) = min
+    tiempo = tiempo * 60 *1000; //en milisegundos
+
+    return tiempo;
+}
+
+void Model::moverServo(char posicion)
+{
+    if(posicion == POSICION_DESCARTE)
+    {
+        servo.write(60);
+    }
+    if(posicion == POSICION_SINTESIS)
+    {
+        servo.write(120);
+    }
 }
