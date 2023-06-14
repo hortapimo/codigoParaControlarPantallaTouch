@@ -22,8 +22,10 @@ void View::splashScreen()
   pantalla.print("Plamic Biotech S.A", CENTER, 150);
   delay(2000);
   pantalla.fillScr(VGA_BLUE);
+  pantalla.setFont(&FreeMonoBold18pt7b);
+  pantalla.print("DCS", CENTER, 100);
   pantalla.setFont(&FreeMonoBold12pt7b);
-  pantalla.print("Drug Capsule Sintetizar", CENTER, 150);
+  pantalla.print("Drug Capsule Synthesizer", CENTER, 150);
   pantalla.print("Model: 0.1", CENTER, 200);
   delay(3000);
 }
@@ -42,9 +44,9 @@ void View::crearVentana1(float caudal=CAUDAL_DEFAULT , float dosis=DOSIS_DEFAULT
 
   pantalla.setColor(VGA_RED);
   pantalla.fillCircle(300, ALTURA_FILA_2+10, RADIO_BOTONES_CAUDAL);
-  pantalla.drawChar(290,ALTURA_FILA_2+10,'+',1,1,1);
+  pantalla.drawChar(290,ALTURA_FILA_2+16,'+',1,1,1);
   pantalla.fillCircle(420, ALTURA_FILA_2+10, RADIO_BOTONES_CAUDAL);
-  pantalla.drawChar(410,ALTURA_FILA_2+10,'-',1,1,1);
+  pantalla.drawChar(410,ALTURA_FILA_2+16,'-',1,1,1);
 
   pantalla.setFont(&FreeMonoBold12pt7b);
   pantalla.setColor(VGA_GRAY);
@@ -55,9 +57,9 @@ void View::crearVentana1(float caudal=CAUDAL_DEFAULT , float dosis=DOSIS_DEFAULT
 
   pantalla.setColor(VGA_RED);
   pantalla.fillCircle(300, ALTURA_FILA_3+10, RADIO_BOTONES_CAUDAL);
-  pantalla.drawChar(290,ALTURA_FILA_3+10,'+',1,1,1);
+  pantalla.drawChar(290,ALTURA_FILA_3+16,'+',1,1,1);
   pantalla.fillCircle(420, ALTURA_FILA_3+10, RADIO_BOTONES_CAUDAL);
-  pantalla.drawChar(410,ALTURA_FILA_3+10,'-',1,1,1);
+  pantalla.drawChar(410,ALTURA_FILA_3+16,'-',1,1,1);
   
   pantalla.setFont(&FreeMonoBold18pt7b);
   pantalla.setColor(VGA_OLIVE);

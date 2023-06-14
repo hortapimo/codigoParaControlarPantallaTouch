@@ -6,6 +6,7 @@
 class Model{
   private:
     void girarMotores(long periodoPulso);
+    void girarMotores(long periodoPulsoM1, long periodoPulsoM2, long relacionCaudal);
     float calcularPeriodoPulso(float caudal);
     float calcularTiempoDosis();
     float calcularTiempoDescarte();

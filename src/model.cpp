@@ -16,6 +16,7 @@ const float PULSOS_VUELTA = 1600; //cm
 const float RADIO_PERIMETRO = 2.475; //cm
 const float FACTOR_CORRECCION = 0.6; //cm
 
+
 const char POSICION_DESCARTE = 'd';
 const char POSICION_SINTESIS = 's';
 
@@ -65,8 +66,8 @@ void Model::iniciarPines()
     //Inicializacion pines Motores
     pinMode(PIN_DIRECCION_M1, OUTPUT);
     pinMode(PIN_DIRECCION_M2, OUTPUT);
-    digitalWrite(PIN_DIRECCION_M1, LOW);
-    digitalWrite(PIN_DIRECCION_M2, LOW);
+    digitalWrite(PIN_DIRECCION_M1, HIGH);
+    digitalWrite(PIN_DIRECCION_M2, HIGH);
 
     pinMode(PIN_PULSO_M1,OUTPUT);
     pinMode(PIN_PULSO_M2,OUTPUT);
@@ -100,6 +101,11 @@ void Model::girarMotores(long periodoPulso)
   delayMicroseconds(periodoPulso/2); 
 }
 
+void Model::girarMotores(long periodoPulsoM1, long periodoPulsoM2, long relacionCaudal)
+{
+
+}
+
 float Model::calcularTiempoDosis()
 {
     float tiempo = dosis / caudal; // ml/(ml/min) = min
@@ -120,10 +126,10 @@ void Model::moverServo(char posicion)
 {
     if(posicion == POSICION_DESCARTE)
     {
-        servo.write(60);
+        servo.write(10);
     }
     if(posicion == POSICION_SINTESIS)
     {
-        servo.write(120);
+        servo.write(100);
     }
 }

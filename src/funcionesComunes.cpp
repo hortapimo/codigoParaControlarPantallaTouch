@@ -5,8 +5,8 @@
 #define YMAX 920
 #define YMIN 175  
 
-void cambioCordenadas(TSPoint& point){
-  
+void cambioCordenadas(TSPoint& point)
+{
   int auxX = map(point.y, XMAX, XMIN, 0, 480);
   int auxY = map(point.x, YMIN, YMAX, 0, 320);
 
@@ -14,7 +14,8 @@ void cambioCordenadas(TSPoint& point){
   point.y = auxY;
 }
 
-void imprimirPunto(int x, int y, int z){
+void imprimirPunto(int x, int y, int z)
+{
   Serial.print("\tPressure = "); Serial.println(z);
   Serial.print("\tx = "); Serial.println(x);
   Serial.print("\ty = "); Serial.println(y);
