@@ -4,17 +4,14 @@
 
 #include "funcionesComunes.h"
 
-
 void imprimirPunto(int x, int y, int z);
 
 Model model;
 View vista;
 Controlador controlador(model, vista);
 
-
-//cambio
-const int XP=6,XM=A2,YP=A1,YM=7;
-TouchScreen toque = TouchScreen(XP, YP, XM, YM, 300);
+const int PIN_XP=27/*lcd6*/, PIN_XM=15/*lcdrs*/, PIN_YP=4/*lcdwr*/, PIN_YM=14/*lcd7*/;
+TouchScreen toque = TouchScreen(PIN_XP, PIN_YP, PIN_XM, PIN_YM, 300);
 TSPoint punto;
 
 void setup() {
@@ -26,11 +23,10 @@ void setup() {
 
 void loop() {
   punto = toque.getPoint();
-  pinMode(YP, OUTPUT);      //restore shared pins
-  pinMode(XM, OUTPUT);
+  pinMode(PIN_YP, OUTPUT);      //restore shared pins
+  pinMode(PIN_XM, OUTPUT);
   
   cambioCordenadas(punto);
 
   controlador.procesarToque(punto);
 }
-
