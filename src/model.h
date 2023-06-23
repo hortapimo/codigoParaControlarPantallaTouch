@@ -1,7 +1,7 @@
 #ifndef MODEL_H
 #define MODEL_H
 
-#include "Servo.h"
+#include "ESP32Servo.h"
 
 class Model{
   private:

@@ -32,7 +32,7 @@ class View{
 
   public:
     
-    UTFTGLUE pantalla{0,A2,A1,A3,A4,A0};
+    UTFTGLUE pantalla{0, LCD_RS, LCD_WR , LCD_CS, LCD_RST, LCD_RD};
 
     View(){
     }
