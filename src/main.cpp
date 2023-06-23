@@ -12,7 +12,7 @@ View vista;
 Controlador controlador(model, vista);
 
 
-
+//cambio
 const int XP=6,XM=A2,YP=A1,YM=7;
 TouchScreen toque = TouchScreen(XP, YP, XM, YM, 300);
 TSPoint punto;

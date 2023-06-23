@@ -30,7 +30,7 @@ void View::splashScreen()
   delay(3000);
 }
 
-void View::crearVentana1(float caudal=CAUDAL_DEFAULT , float dosis=DOSIS_DEFAULT) 
+void View::crearVentana1(float caudal , float dosis) 
 {
   pantalla.setFont(&FreeMonoBold12pt7b);
   pantalla.setBackColor(VGA_BLUE);
@@ -68,7 +68,7 @@ void View::crearVentana1(float caudal=CAUDAL_DEFAULT , float dosis=DOSIS_DEFAULT
   ventanaActual=1;
 }
 
-void View::crearVentana11(float dosis=DOSIS_DEFAULT_DESCARTE, float relacionCaudal = RC_DEFAULT)
+void View::crearVentana11(float dosis, float relacionCaudal)
 {
   pantalla.setFont(&FreeMonoBold12pt7b);
   
@@ -104,8 +104,7 @@ void View::crearVentana11(float dosis=DOSIS_DEFAULT_DESCARTE, float relacionCaud
   ventanaActual=11;
 }
 
-void View::crearVentana2(float caudal = CAUDAL_DEFAULT, float dosis = DOSIS_DEFAULT,
- float dosisDescarte = DOSIS_DEFAULT_DESCARTE, float relacionCaudal = RC_DEFAULT)
+void View::crearVentana2(float caudal , float dosis , float dosisDescarte, float relacionCaudal)
 {
   pantalla.setFont(&FreeMonoBold12pt7b);
 

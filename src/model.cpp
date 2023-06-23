@@ -1,6 +1,5 @@
 #include "model.h"
 #include "Arduino.h"
-#include "Servo.h""
 
 const short int PIN_PULSO_M1 = 31;
 const short int PIN_DIRECCION_M1 = 33;
@@ -67,7 +66,7 @@ void Model::iniciarPines()
     pinMode(PIN_DIRECCION_M1, OUTPUT);
     pinMode(PIN_DIRECCION_M2, OUTPUT);
     digitalWrite(PIN_DIRECCION_M1, HIGH);
-    digitalWrite(PIN_DIRECCION_M2, HIGH);
+    digitalWrite(PIN_DIRECCION_M2, LOW);
 
     pinMode(PIN_PULSO_M1,OUTPUT);
     pinMode(PIN_PULSO_M2,OUTPUT);
