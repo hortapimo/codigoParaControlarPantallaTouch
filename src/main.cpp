@@ -17,8 +17,7 @@ TSPoint punto;
 void setup() {
   controlador.refVista.pantalla.InitLCD();
   vista.iniciarGui();
-  Serial.begin(9600);
-
+  Serial.begin(115200);
 }
 
 void loop() {
@@ -26,7 +25,12 @@ void loop() {
   pinMode(PIN_YP, OUTPUT);      //restore shared pins
   pinMode(PIN_XM, OUTPUT);
   
+  Serial.println("Antes:");
+  imprimirPunto(punto.x, punto.y, punto.z);
   cambioCordenadas(punto);
+  Serial.println("Despues:");
+  imprimirPunto(punto.x, punto.y, punto.z);
+  delay(2000);
 
   controlador.procesarToque(punto);
 }
