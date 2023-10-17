@@ -35,8 +35,6 @@ void Controlador::procesarToque(TSPoint point)
       break;
 
       case 2:
-        Serial.println("Entro a case 2");
-        delay(1000);
         procesarToqueVentana2(point);
         
       break;  
@@ -44,7 +42,7 @@ void Controlador::procesarToque(TSPoint point)
       default:
       break;
     } 
-
+    delay(100);
   }
 }
 

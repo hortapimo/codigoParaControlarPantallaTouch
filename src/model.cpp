@@ -1,19 +1,19 @@
 #include "model.h"
 #include "Arduino.h"
 
-const short int PIN_PULSO_M1 = 31;
-const short int PIN_DIRECCION_M1 = 33;
-const short int PIN_PULSO_M2 = 35;
-const short int PIN_DIRECCION_M2 = 37;
+const short int PIN_PULSO_M1 = 18;
+const short int PIN_DIRECCION_M1 = 19;
+const short int PIN_PULSO_M2 = 22;
+const short int PIN_DIRECCION_M2 = 23;
 
-const short int PIN_SERVO = 53;
+const short int PIN_SERVO = 5;
 
 const float CANTIDAD_MOTORES =2;
 
 const float DIAMETRO_INTERNO = 0.16; //cm
 const float PULSOS_VUELTA = 1600; //cm
 const float RADIO_PERIMETRO = 2.475; //cm
-const float FACTOR_CORRECCION = 0.6; //cm
+const float FACTOR_CORRECCION = 0.47; //cm
 
 
 const char POSICION_DESCARTE = 'd';

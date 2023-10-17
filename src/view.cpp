@@ -50,7 +50,7 @@ void View::crearVentana1(float caudal , float dosis)
 
   pantalla.setFont(&FreeMonoBold12pt7b);
   pantalla.setColor(VGA_GRAY);
-  pantalla.print("Dosis:\n[ml/min]", 10,ALTURA_FILA_3);
+  pantalla.print("Dosis:\n[ml]", 10,ALTURA_FILA_3);
 
   pantalla.setFont(&FreeMonoBold18pt7b);
   pantalla.print(String(dosis,1), 150,ALTURA_FILA_3);
@@ -76,7 +76,7 @@ void View::crearVentana11(float dosis, float relacionCaudal)
   pantalla.setColor(VGA_GRAY);
   pantalla.print("Indique Dosis de descarte", 0,10);
   
-  pantalla.print("Dosis:\n[ml/min]", 10,ALTURA_FILA_2);
+  pantalla.print("Dosis:\n[ml]", 10,ALTURA_FILA_2);
   pantalla.print("Relación\nde caudal:", 10, ALTURA_FILA_3);
 
   pantalla.setFont(&FreeMonoBold18pt7b);
