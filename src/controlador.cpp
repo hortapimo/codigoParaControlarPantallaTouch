@@ -134,7 +134,7 @@ void Controlador::procesarToqueVentana2(TSPoint point)
     case BOTON_INICIAR:
       refVista.limpiarPantalla();
       refVista.crearVentana3();
-      refModel.dosificar();
+      refModel.sintetizar();
       refVista.limpiarPantalla();
       refVista.crearVentana2(refModel.caudal, refModel.dosis, refModel.relacionCaudal);
     break;   

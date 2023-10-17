@@ -19,47 +19,55 @@ const float FACTOR_CORRECCION = 0.47; //cm
 const char POSICION_DESCARTE = 'd';
 const char POSICION_SINTESIS = 's';
 
-void Model::dosificar()
+void Model::sintetizar()
 {
+    //Hay que ver el tema de los tiempos en microsegundos ya que si el equipo esta prendido por ams de 1h va a fallar
     iniciarPines();
-    float caudalPorBomba = caudal/CANTIDAD_MOTORES;
-    float periodoPulso = calcularPeriodoPulso(caudalPorBomba);
+    float caudalMotor1 = caudal/(relacionCaudal+1);
+    float caudalMotor2 = caudal-caudalMotor1;
+    float periodoPulsoM1 = calcularPeriodoPulso(caudalMotor1);
+    float periodoPulsoM2 = calcularPeriodoPulso(caudalMotor2);
     float tiempoDosis = calcularTiempoDosis();
     float tiempoDescarte = calcularTiempoDescarte();
 
     moverServo(POSICION_DESCARTE);
     delay(1000);
 
-    float tiempoInicio = millis();
-    float tiempo = millis();
+    //hacer descarte
+    dosificar(tiempoDescarte, periodoPulsoM1, periodoPulsoM2);
+    moverServo(POSICION_SINTESIS);
+
+    //hacer sintesis
+    dosificar(tiempoDosis, periodoPulsoM1, periodoPulsoM2);
+    moverServo(POSICION_DESCARTE);
+}
+
+void Model::dosificar(float tiempoDescarte, float periodoPulsoM1, float periodoPulsoM2){
+    float tiempoInicio = micros();
+    float tiempo = micros();
+    float tiempoRondaM1 = micros();
+    float tiempoRondaM2 = micros();
 
     //Se dosifica el descarte
     while((tiempo - tiempoInicio) < tiempoDescarte)
     {
-        for(int i=0; i<PULSOS_VUELTA/8;i++)
-        {
-            girarMotores(periodoPulso); 
+        if (tiempo-tiempoRondaM1 >= periodoPulsoM1){
+            digitalWrite(PIN_PULSO_M1, HIGH);
+            delayMicroseconds(5);
+            digitalWrite(PIN_PULSO_M1, LOW);
+            delayMicroseconds(5);
+            tiempoRondaM1=micros();
         }
-        tiempo = millis();
-    }
-
-    moverServo(POSICION_SINTESIS);
-    tiempoInicio = millis();
-    tiempo = millis();
-
-    //Se dosifica la sintesis
-    while((tiempo - tiempoInicio) < tiempoDosis)
-    {
-        for(int i=0; i<PULSOS_VUELTA/8;i++)
-        {
-           girarMotores(periodoPulso); 
+        if (tiempo-tiempoRondaM2>= periodoPulsoM2){
+            digitalWrite(PIN_PULSO_M2, HIGH);
+            delayMicroseconds(5);
+            digitalWrite(PIN_PULSO_M2, LOW);
+            delayMicroseconds(5);
+            tiempoRondaM2=micros();
         }
-        tiempo = millis();
+        tiempo = micros();
     }
-
-    moverServo(POSICION_DESCARTE);
 }
-
 void Model::iniciarPines()
 {
     //Inicializacion pines Motores
@@ -87,7 +95,7 @@ float Model::calcularPeriodoPulso(float caudal)
   return aux; //Sale en microsegundos
 }
 
-void Model::girarMotores(long periodoPulso)
+void Model::hacerPasoMotores(long periodoPulso)
 {
   digitalWrite(PIN_PULSO_M1, HIGH);
   digitalWrite(PIN_PULSO_M2, HIGH);
@@ -108,7 +116,7 @@ void Model::girarMotores(long periodoPulsoM1, long periodoPulsoM2, long relacion
 float Model::calcularTiempoDosis()
 {
     float tiempo = dosis / caudal; // ml/(ml/min) = min
-    tiempo = tiempo * 60 *1000; //en milisegundos
+    tiempo = tiempo * 60 *1000000; //en microsegundos
 
     return tiempo;
 }
@@ -116,7 +124,7 @@ float Model::calcularTiempoDosis()
 float Model::calcularTiempoDescarte()
 {
     float tiempo = dosisDescarte / caudal; // ml/(ml/min) = min
-    tiempo = tiempo * 60 *1000; //en milisegundos
+    tiempo = tiempo * 60 *1000000; //en microsegundos
 
     return tiempo;
 }

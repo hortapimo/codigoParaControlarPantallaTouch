@@ -5,7 +5,7 @@
 
 class Model{
   private:
-    void girarMotores(long periodoPulso);
+    void hacerPasoMotores(long periodoPulso);
     void girarMotores(long periodoPulsoM1, long periodoPulsoM2, long relacionCaudal);
     float calcularPeriodoPulso(float caudal);
     float calcularTiempoDosis();
@@ -21,8 +21,9 @@ class Model{
     float dosisDescarte = 0.2;//ml/min
     float relacionCaudal = 1; //ml/min
 
-    void dosificar();
-    void hacerDescarte();
+    void sintetizar();
+    void dosificar(float tiempoDescarte, float periodoPulsoM1, float periodoPulsoM2);
+    void hacerDescarte(float tiempoDescarte,float periodoPulsoM1, float periodoPulsoM2);
 };
 
 #endif
