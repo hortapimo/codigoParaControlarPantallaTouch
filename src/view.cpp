@@ -11,7 +11,7 @@ void View::iniciarGui()
 {
   splashScreen();
   limpiarPantalla();
-  crearVentana1();
+  crearVentanaInicio();
 }
 
 void View::splashScreen()
@@ -64,8 +64,78 @@ void View::crearVentana1(float caudal , float dosis)
   pantalla.setFont(&FreeMonoBold18pt7b);
   pantalla.setColor(VGA_OLIVE);
   pantalla.print("Siguiente", 280,280);
+  pantalla.print("Regresar", 0, 280);  
   
   ventanaActual=1;
+}
+
+void View::crearVentanaInicio() 
+{
+  pantalla.setFont(&FreeMonoBold12pt7b);
+  pantalla.setBackColor(VGA_BLUE);
+  pantalla.setColor(VGA_OLIVE);
+  pantalla.print("------------ Alvi 1.0 ------------", 0,10);
+
+  pantalla.setColor(VGA_GRAY);
+  pantalla.print("Limpiar", 10,ALTURA_FILA_2);
+
+  pantalla.setFont(&FreeMonoBold18pt7b);
+
+  pantalla.setColor(VGA_RED);
+  pantalla.fillCircle(300, ALTURA_FILA_2+10, RADIO_BOTONES_CAUDAL);
+
+  pantalla.setFont(&FreeMonoBold12pt7b);
+  pantalla.setColor(VGA_GRAY);
+  pantalla.print("Sintetizar", 10,ALTURA_FILA_3);
+
+  pantalla.setFont(&FreeMonoBold18pt7b);
+
+  pantalla.setColor(VGA_RED);
+  pantalla.fillCircle(300, ALTURA_FILA_3+10, RADIO_BOTONES_CAUDAL);
+  
+  pantalla.setFont(&FreeMonoBold18pt7b);
+  pantalla.setColor(VGA_OLIVE);
+  
+  ventanaActual=0;
+}
+
+void View::crearVentanaLimpieza(float caudal, float dosis)
+{
+  pantalla.setFont(&FreeMonoBold12pt7b);
+  pantalla.setBackColor(VGA_BLUE);
+  pantalla.setColor(VGA_OLIVE);
+  pantalla.print("------------ Alvi 1.0 ------------", 0,10);
+
+  pantalla.print("Caudal:\n[ml/min]", 10,ALTURA_FILA_2);
+
+  pantalla.setFont(&FreeMonoBold18pt7b);
+  pantalla.print(String(caudal,1), 150,ALTURA_FILA_2);
+
+  pantalla.setColor(VGA_RED);
+  pantalla.fillCircle(300, ALTURA_FILA_2+10, RADIO_BOTONES_CAUDAL);
+  pantalla.drawChar(290,ALTURA_FILA_2+16,'+',1,1,1);
+  pantalla.fillCircle(420, ALTURA_FILA_2+10, RADIO_BOTONES_CAUDAL);
+  pantalla.drawChar(410,ALTURA_FILA_2+16,'-',1,1,1);
+
+  pantalla.setFont(&FreeMonoBold12pt7b);
+  pantalla.setColor(VGA_GRAY);
+  pantalla.print("Dosis:\n[ml]", 10,ALTURA_FILA_3);
+
+  pantalla.setFont(&FreeMonoBold18pt7b);
+  pantalla.print(String(dosis,1), 150,ALTURA_FILA_3);
+
+  pantalla.setColor(VGA_RED);
+  pantalla.fillCircle(300, ALTURA_FILA_3+10, RADIO_BOTONES_CAUDAL);
+  pantalla.drawChar(290,ALTURA_FILA_3+16,'+',1,1,1);
+  pantalla.fillCircle(420, ALTURA_FILA_3+10, RADIO_BOTONES_CAUDAL);
+  pantalla.drawChar(410,ALTURA_FILA_3+16,'-',1,1,1);
+  
+  pantalla.setFont(&FreeMonoBold18pt7b);
+  pantalla.setColor(VGA_OLIVE);
+  pantalla.print("Iniciar", 280,280);
+  pantalla.print("Regresar", 0, 280);
+  
+  ventanaActual=40;
 }
 
 void View::crearVentana11(float dosis, float relacionCaudal)
@@ -110,7 +180,7 @@ void View::crearVentana2(float caudal , float dosis , float dosisDescarte, float
 
   pantalla.setBackColor(VGA_BLUE);
   pantalla.setColor(VGA_GRAY);
-  pantalla.print("Parámetros cargados:", 0,10);
+  pantalla.print("Parametros cargados:", 0,10);
 
   pantalla.print("Caudal[ml/min]:",0,50);
   pantalla.print(String(caudal,1), 320, 50);
@@ -137,6 +207,15 @@ void View::crearVentana3()
   pantalla.print("Dosificando ...", CENTER, 150);
 
   ventanaActual = 3;
+}
+
+void View::crearVentanaLimpiando()
+{
+  limpiarPantalla();
+
+  pantalla.print("Limpiando ...", CENTER, 150);
+
+  ventanaActual = 41;
 }
 
 void View::cambiarCaudal(float caudal, float dosis, float delta)

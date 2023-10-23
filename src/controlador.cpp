@@ -6,12 +6,15 @@
 #define BOTON_SIGUIENTE 's'
 #define BOTON_REGRESAR 'r'
 #define BOTON_MAS_CAUDAL 'a'
+#define BOTON_IR_A_SINTESIS 's'
 #define BOTON_MAS_DOSIS 'b'
+#define BOTON_IR_A_LIMPIEZA 'l'
 #define BOTON_MAS_RELACION 'q'
 #define BOTON_MENOS_CAUDAL 'A'
 #define BOTON_MENOS_DOSIS 'B'
 #define BOTON_MENOS_RELACION 'Q'
 #define BOTON_INICIAR 'i'
+#define BOTON_INICIAR_LIMPIEZA 'I'
 #define NINGUN_BOTON 'n'
 
 const float DELTA_CAUDAL = 1.0;
@@ -26,6 +29,10 @@ void Controlador::procesarToque(TSPoint point)
     
     switch(refVista.ventanaActual)
     {
+      case 0:
+        procesarToqueVentanaInicio(point);
+      break;
+
       case 1:
         procesarToqueVentana1(point);
       break;
@@ -36,8 +43,11 @@ void Controlador::procesarToque(TSPoint point)
 
       case 2:
         procesarToqueVentana2(point);
-        
       break;  
+
+      case 40:
+        procesarToqueLimpieza(point);
+      break; 
 
       default:
       break;
@@ -49,6 +59,25 @@ void Controlador::procesarToque(TSPoint point)
 bool Controlador::presionoPantalla(int presion)
 {
   return (presion > 100);
+}
+
+void Controlador::procesarToqueVentanaInicio(TSPoint point)
+{
+  switch (lugarDondeTocoVentanaInicio(point))
+  {
+    case BOTON_IR_A_SINTESIS:
+      refVista.ventanaActual = 1;
+      refVista.limpiarPantalla();
+      refVista.crearVentana1(refModel.caudal, refModel.caudal);      
+    break;
+
+    case BOTON_IR_A_LIMPIEZA:
+      refVista.ventanaActual = 40;
+      refVista.limpiarPantalla();
+      refVista.crearVentanaLimpieza(refModel.caudal, refModel.caudal); 
+    break;
+
+  }
 }
 
 void Controlador::procesarToqueVentana1(TSPoint point)
@@ -75,11 +104,19 @@ void Controlador::procesarToqueVentana1(TSPoint point)
       refModel.dosis -= DELTA_DOSIS; 
     break;
 
+    case BOTON_REGRESAR:
+      refVista.limpiarPantalla();
+      refVista.crearVentanaInicio();
+    break; 
+
     case BOTON_SIGUIENTE:
       refVista.ventanaActual = 11;
       refVista.limpiarPantalla();
       refVista.crearVentana11(refModel.dosisDescarte, refModel.relacionCaudal);
-    break;   
+    break;  
+
+    default:
+    break; 
         
   }
 }
@@ -136,19 +173,81 @@ void Controlador::procesarToqueVentana2(TSPoint point)
       refVista.crearVentana3();
       refModel.sintetizar();
       refVista.limpiarPantalla();
-      refVista.crearVentana2(refModel.caudal, refModel.dosis, refModel.relacionCaudal);
+      refVista.crearVentanaInicio();
     break;   
         
   }
 }
 
-char Controlador::lugarDondeTocoVentana1(TSPoint point)
+void Controlador::procesarToqueLimpieza(TSPoint point)
+{
+  switch (lugarDondeTocoLimpieza(point))
+  {
+    case BOTON_MAS_CAUDAL:
+      refVista.cambiarCaudal(refModel.caudal, refModel.dosis,DELTA_CAUDAL);
+      refModel.caudal += DELTA_CAUDAL;  
+    break;
+
+    case BOTON_MENOS_CAUDAL:
+      refVista.cambiarCaudal(refModel.caudal, refModel.dosis,-1*DELTA_CAUDAL);
+      refModel.caudal -= DELTA_CAUDAL;
+    break;
+
+    case BOTON_MAS_DOSIS:
+      refVista.cambiarDosis(refModel.caudal, refModel.dosis,DELTA_DOSIS);
+      refModel.dosis += DELTA_DOSIS;  
+    break;
+
+    case BOTON_MENOS_DOSIS:
+      refVista.cambiarDosis(refModel.caudal, refModel.dosis,-1*DELTA_DOSIS);
+      refModel.dosis -= DELTA_DOSIS; 
+    break;
+
+    case BOTON_INICIAR_LIMPIEZA:
+      refVista.limpiarPantalla();
+      refVista.crearVentanaLimpiando();
+      refModel.limpiar();
+      refVista.limpiarPantalla();
+      refVista.crearVentanaInicio();
+    break;   
+
+    case BOTON_REGRESAR:
+      refVista.limpiarPantalla();
+      refVista.crearVentanaInicio();
+    break; 
+
+    default:
+    break;
+        
+  }
+}
+
+char Controlador::lugarDondeTocoVentanaInicio(TSPoint point)
 {
 
-  if (point.x>280 && point.y > 290)
+  if ((270<point.x && point.x<330) && (160<point.y && point.y<240))
+  {
+    return BOTON_IR_A_SINTESIS;
+  }
+  if ((270<point.x && point.x<330) && (60<point.y && point.y<120))
+  { 
+    return BOTON_IR_A_LIMPIEZA;
+  }
+  else
+  {
+    return NINGUN_BOTON;
+  }
+
+}
+
+char Controlador::lugarDondeTocoVentana1(TSPoint point)
+{
+  //Boton siguiente
+  if (point.x>280 && point.y > 280)
   {
     return BOTON_SIGUIENTE;
   }
+  //Botones dosis
   if ((270<point.x && point.x<330) && (160<point.y && point.y<240))
   {
     return BOTON_MAS_DOSIS;
@@ -165,6 +264,12 @@ char Controlador::lugarDondeTocoVentana1(TSPoint point)
   {
     return BOTON_MENOS_DOSIS;
   }
+  //Boton regresar
+ if (point.x<150 && point.y > 280)
+  {
+    return BOTON_REGRESAR;
+  }
+
   else
   {
     return NINGUN_BOTON;
@@ -174,7 +279,7 @@ char Controlador::lugarDondeTocoVentana1(TSPoint point)
 char Controlador::lugarDondeTocoVentana11(TSPoint point)
 {
   //Boton siguiente
-  if (point.x>280 && point.y > 290)
+  if (point.x>280 && point.y > 280)
   {
     return BOTON_SIGUIENTE;
   }
@@ -200,7 +305,7 @@ char Controlador::lugarDondeTocoVentana11(TSPoint point)
   }
 
   //Boton regresar
-  if (point.x<150 && point.y > 290)
+  if (point.x<150 && point.y > 280)
   {
     return BOTON_REGRESAR;
   }
@@ -214,14 +319,50 @@ char Controlador::lugarDondeTocoVentana11(TSPoint point)
 char Controlador::lugarDondeTocoVentana2(TSPoint point)
 {
   
-  if (point.x<150 && point.y > 290)
+  if (point.x<150 && point.y > 280)
   {
     return BOTON_REGRESAR;
   }
-  if (point.x>280 && point.y > 290)
+  if (point.x>280 && point.y > 280)
   {
     return BOTON_INICIAR;
   }
   else return NINGUN_BOTON;
 
+}
+
+char Controlador::lugarDondeTocoLimpieza(TSPoint point)
+{
+ //Boton siguiente
+  if (point.x>280 && point.y > 280)
+  {
+    return BOTON_INICIAR_LIMPIEZA;
+  }
+  //Botones dosis
+  if ((270<point.x && point.x<330) && (160<point.y && point.y<240))
+  {
+    return BOTON_MAS_DOSIS;
+  }
+  if ((270<point.x && point.x<330) && (60<point.y && point.y<120))
+  { 
+    return BOTON_MAS_CAUDAL;
+  }
+  if ((395<point.x && point.x<470) && (60<point.y && point.y<120))
+  {
+    return BOTON_MENOS_CAUDAL;
+  }
+  if ((395<point.x && point.x<470) && (160<point.y && point.y<240))
+  {
+    return BOTON_MENOS_DOSIS;
+  }
+  //Boton regresar
+ if (point.x<150 && point.y > 280)
+  {
+    return BOTON_REGRESAR;
+  }
+
+  else
+  {
+    return NINGUN_BOTON;
+  }
 }

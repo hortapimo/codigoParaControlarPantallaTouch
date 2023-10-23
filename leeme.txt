@@ -1,1 +1,1 @@
-Este version esta para usarse con esp32.
+Este version es la ultima que se actualizo con carpetas. Se sigue el proyecto con git, hay dos main branches, una que va con arduino y otra con esp32
