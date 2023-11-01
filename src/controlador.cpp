@@ -208,7 +208,7 @@ void Controlador::procesarToqueLimpieza(TSPoint point)
       refVista.crearVentanaLimpiando();
       refModel.limpiar();
       refVista.limpiarPantalla();
-      refVista.crearVentanaInicio();nbm,.bn
+      refVista.crearVentanaInicio();
     break;   
 
     case BOTON_REGRESAR:
