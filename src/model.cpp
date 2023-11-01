@@ -13,11 +13,18 @@ const float CANTIDAD_MOTORES =2;
 const float DIAMETRO_INTERNO = 0.16; // [cm]
 const float PULSOS_VUELTA = 3200; // [cm]
 const float RADIO_PERIMETRO = 2.475; // [cm]
-const float FACTOR_CORRECCION = 0.535; // [cm]
+
+const float FACTOR_CORRECCION_M1 = 0.535; // [cm]
+const float FACTOR_CORRECCION_DEFAULT = 0.535; // [cm]
+const float FACTOR_CORRECCION_M2 = 0.495; // [cm]
+
+const short int MOTOR_1 = 1;
+const short int MOTOR_2 = 2;
+const short int MOTOR_DEFAULT = 0;
 
 const char POSICION_DESCARTE = 'd';
 const char POSICION_SINTESIS = 's';
-const float VOLUMEN_MUERTO = 2.53; // [ml]bn
+const float VOLUMEN_MUERTO = 1.22; // [ml]bn
 
 const short int PERIODO_PULSO_HIGH = 4;
 
@@ -25,13 +32,14 @@ void Model::sintetizar()
 {
     //Hay que ver el tema de los tiempos en microsegundos ya que si el equipo esta prendido por ams de 1h va a fallar
     iniciarPines();
-    float caudalMotor1 = caudal/(relacionCaudal+1);
-    float caudalMotor2 = caudal-caudalMotor1;
-    float periodoPulsoVolMuerto = calcularPeriodoPulso(caudal/2); 
-    float periodoPulsoM1 = calcularPeriodoPulso(caudalMotor1);
-    float periodoPulsoM2 = calcularPeriodoPulso(caudalMotor2);
+    float caudalMotor2 = caudal/(relacionCaudal+1);
+    float caudalMotor1 = caudal-caudalMotor2;
+    float periodoPulsoVolMuerto = calcularPeriodoPulso(caudal/2, MOTOR_DEFAULT); 
+    float periodoPulsoM1 = calcularPeriodoPulso(caudalMotor1, MOTOR_1);
+    float periodoPulsoM2 = calcularPeriodoPulso(caudalMotor2, MOTOR_2);
     float tiempoDosis = calcularTiempoDosis(dosis);
     float tiempoDescarte = calcularTiempoDosis(dosisDescarte);
+    //tiempoDosis = tiempoDosis-tiempoDescarte;
     float tiempoVolumenMuerto =calcularTiempoDosis(VOLUMEN_MUERTO);
 
     moverServo(POSICION_DESCARTE);
@@ -90,13 +98,18 @@ void Model::iniciarPines()
 
 }
 
-float Model::calcularPeriodoPulso(float caudal)
+float Model::calcularPeriodoPulso(float caudal, short int motor)
 {
   float aux;
   float area = M_PI*(DIAMETRO_INTERNO*DIAMETRO_INTERNO)/4;
   aux = area * RADIO_PERIMETRO * 2 * M_PI / (caudal*PULSOS_VUELTA) * 1000000 *60;
-  aux = aux * FACTOR_CORRECCION;
- 
+  if (motor == MOTOR_1){
+    aux = aux * FACTOR_CORRECCION_M1; 
+  }else if (motor == MOTOR_2){
+    aux = aux * FACTOR_CORRECCION_M2; 
+  }else{
+    aux = aux * FACTOR_CORRECCION_DEFAULT; 
+  }
   return aux; //Sale en microsegundos
 }
 
@@ -136,9 +149,9 @@ void Model::moverServo(char posicion)
 void Model::limpiar()
 {
     iniciarPines();
-
-    float periodoPulsoM1 = calcularPeriodoPulso(caudal/2);
-    float periodoPulsoM2 = periodoPulsoM1;
+    float caudalLimpiezaMotor =caudal/2;
+    float periodoPulsoM1 = calcularPeriodoPulso(caudalLimpiezaMotor, MOTOR_1);
+    float periodoPulsoM2 = calcularPeriodoPulso(caudalLimpiezaMotor, MOTOR_2);
     float tiempoDosis = calcularTiempoDosis(dosis);
 
     dosificar(tiempoDosis, periodoPulsoM1, periodoPulsoM2);

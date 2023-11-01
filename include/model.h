@@ -6,7 +6,7 @@
 class Model{
   private:
     void hacerPasoMotores(long periodoPulso);
-    float calcularPeriodoPulso(float caudal);
+    float calcularPeriodoPulso(float caudal, short int MOTOR);
     float calcularTiempoDosis(float dosis_);
     void iniciarPines();
     void moverServo(char posicion);
