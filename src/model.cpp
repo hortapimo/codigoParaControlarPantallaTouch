@@ -24,7 +24,7 @@ const short int MOTOR_DEFAULT = 0;
 
 const char POSICION_DESCARTE = 'd';
 const char POSICION_SINTESIS = 's';
-const float VOLUMEN_MUERTO = 1.22; // [ml]bn
+const float VOLUMEN_MUERTO = 1.47; // [ml]bn
 
 const short int PERIODO_PULSO_HIGH = 4;
 

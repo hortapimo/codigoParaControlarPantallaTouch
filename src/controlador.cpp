@@ -356,7 +356,7 @@ char Controlador::lugarDondeTocoLimpieza(TSPoint point)
     return BOTON_MENOS_DOSIS;
   }
   //Boton regresar
- if (point.x<150 && point.y > 280)
+ if (point.x<170 && point.y > 275)
   {
     return BOTON_REGRESAR;
   }
