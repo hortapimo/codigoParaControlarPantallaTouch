@@ -2,6 +2,7 @@
 #include <Fonts/FreeMonoBold18pt7b.h>
 #include <Fonts/FreeMonoBold12pt7b.h>
 #include "Arduino.h"
+#include "constG.h"
 
 const int RADIO_BOTONES_CAUDAL = 40;
 const int ALTURA_FILA_2 = 90;
@@ -19,7 +20,7 @@ void View::splashScreen()
 
   pantalla.fillScr(VGA_BLUE);
   pantalla.setFont(&FreeMonoBold18pt7b);
-  pantalla.print("Plamic Biotech S.A", CENTER, 150);
+  pantalla.print("Lab NanoMed CNEA", CENTER, 150);
   delay(2000);
   pantalla.fillScr(VGA_BLUE);
   pantalla.setFont(&FreeMonoBold18pt7b);
@@ -99,7 +100,7 @@ void View::crearVentanaInicio()
   ventanaActual=0;
 }
 
-void View::crearVentanaLimpieza(float caudal, float dosis)
+void View::crearVentanaLimpieza(float caudal, float dosisLimpieza)
 {
   pantalla.setFont(&FreeMonoBold12pt7b);
   pantalla.setBackColor(VGA_BLUE);
@@ -122,7 +123,7 @@ void View::crearVentanaLimpieza(float caudal, float dosis)
   pantalla.print("Dosis:\n[ml]", 10,ALTURA_FILA_3);
 
   pantalla.setFont(&FreeMonoBold18pt7b);
-  pantalla.print(String(dosis,1), 150,ALTURA_FILA_3);
+  pantalla.print(String(dosisLimpieza,1), 150,ALTURA_FILA_3);
 
   pantalla.setColor(VGA_RED);
   pantalla.fillCircle(300, ALTURA_FILA_3+10, RADIO_BOTONES_CAUDAL);
@@ -147,11 +148,11 @@ void View::crearVentana11(float dosis, float relacionCaudal)
   pantalla.print("Indique Dosis de descarte", 0,10);
   
   pantalla.print("Dosis:\n[ml]", 10,ALTURA_FILA_2);
-  pantalla.print("Relación\nde caudal:", 10, ALTURA_FILA_3);
+  pantalla.print("Relacion\n caudal:\n(acu:org)", 10, ALTURA_FILA_3);
 
   pantalla.setFont(&FreeMonoBold18pt7b);
   pantalla.print(String(dosis,1), 150,ALTURA_FILA_2);
-  pantalla.print(String(relacionCaudal,1), 150,ALTURA_FILA_3);
+  pantalla.print(String(relacionCaudal,0)+":1",150, ALTURA_FILA_3);
 
 
   pantalla.setColor(VGA_RED);
@@ -189,7 +190,7 @@ void View::crearVentana2(float caudal , float dosis , float dosisDescarte, float
   pantalla.print("Dosis descarte[ml]:",0, 170);
   pantalla.print(String(dosisDescarte,1), 320, 170);
   pantalla.print("Relacion Caudal:",0, 230);
-  pantalla.print(String(relacionCaudal,1), 320, 230);
+  pantalla.print(String(relacionCaudal,0)+":1", 320, 230);
 
   pantalla.setFont(&FreeMonoBold18pt7b);
   pantalla.setColor(VGA_OLIVE);
@@ -218,41 +219,65 @@ void View::crearVentanaLimpiando()
   ventanaActual = 41;
 }
 
-void View::cambiarCaudal(float caudal, float dosis, float delta)
+void View::cambiarCaudal(float caudal, float delta)
 {
-  caudal = caudal + delta;
+  if ((MIN_CAUDAL_GB<=caudal) && (caudal <= MAX_CAUDAL_GB))
+  {
+    if(!((caudal==MIN_CAUDAL_GB) && (delta<0))&&!((caudal==MAX_CAUDAL_GB)&&(delta>0)))
+    {
+      caudal = caudal + delta;
 
-  pantalla.setBackColor(VGA_BLUE);
-  pantalla.setColor(VGA_GRAY);
-  pantalla.print(String(caudal,1), 150,ALTURA_FILA_2);
-
+      pantalla.setBackColor(VGA_BLUE);
+      pantalla.setColor(VGA_GRAY);
+      pantalla.print(String(caudal,1), 150,ALTURA_FILA_2); 
+    }
+  }
 }
 
-void View::cambiarDosis(float caudal, float dosis, float delta)
+void View::cambiarDosis(float dosis, float delta)
 { 
-  dosis = dosis + delta;
+  if (dosis>=DOSIS_MINIMA_GB)
+  {
+    if(!((dosis==DOSIS_MINIMA_GB)&&(delta<0)))
+    {
+      dosis = dosis + delta;
 
-  pantalla.setBackColor(VGA_BLUE);
-  pantalla.setColor(VGA_GRAY);
-  pantalla.print(String(dosis,1), 150,ALTURA_FILA_3);
+      pantalla.setBackColor(VGA_BLUE);
+      pantalla.setColor(VGA_GRAY);
+      pantalla.print(String(dosis,1), 150,ALTURA_FILA_3);
+    }
+  }
 }
 
 void View::cambiarDosisDescarte(float dosis, float delta)
 {
-  dosis = dosis + delta;
+    if (dosis>=DOSIS_MINIMA_DESCARTE_GB)
+  {
+    if(!((dosis+delta<DOSIS_MINIMA_DESCARTE_GB)))
+    {
+      dosis = dosis + delta;
 
-  pantalla.setBackColor(VGA_BLUE);
-  pantalla.setColor(VGA_GRAY);
-  pantalla.print(String(dosis,1), 150,ALTURA_FILA_2);
+      pantalla.setBackColor(VGA_BLUE);
+      pantalla.setColor(VGA_GRAY);
+      pantalla.print(String(dosis,1), 150,ALTURA_FILA_2);
+    }
+  }
 }
 
 void View::cambiarRelacion(float relacionCaudal, float delta)
 {
-  relacionCaudal = relacionCaudal + delta;
+  if(relacionCaudal>=RELACION_MINIMA_GB)
+  {
+    if(!(relacionCaudal+delta < RELACION_MINIMA_GB))
+    {
+      relacionCaudal = relacionCaudal + delta;
 
-  pantalla.setBackColor(VGA_BLUE);
-  pantalla.setColor(VGA_GRAY);
-  pantalla.print(String(relacionCaudal,1),150, ALTURA_FILA_3);
+      pantalla.setBackColor(VGA_BLUE);
+      pantalla.setColor(VGA_GRAY);
+      pantalla.print(String(relacionCaudal,0)+":1",150, ALTURA_FILA_3);
+    }
+  }
+
 }
 
 void View::limpiarPantalla()

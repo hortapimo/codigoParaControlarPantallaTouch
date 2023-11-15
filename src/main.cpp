@@ -4,6 +4,8 @@
 
 #include "funcionesComunes.h"
 
+const float MAX_CAUDAL_GV = 20.0;
+
 void imprimirPunto(int x, int y, int z);
 
 Model model;
@@ -14,17 +16,19 @@ const int PIN_XP=27/*lcd6*/, PIN_XM=15/*lcdrs*/, PIN_YP=4/*lcdwr*/, PIN_YM=14/*l
 TouchScreen toque = TouchScreen(PIN_XP, PIN_YP, PIN_XM, PIN_YM, 377);
 TSPoint punto;
 
+
 void setup() 
 {
   controlador.refVista.pantalla.InitLCD();
   vista.iniciarGui();
+  Serial.begin(115200);
 }
 
 void loop() 
 {
   punto = toque.getPoint();
 
-  pinMode(PIN_YP, OUTPUT);      //restore shared pins
+  pinMode(PIN_YP, OUTPUT); //restauro pines compartidos
   pinMode(PIN_XM, OUTPUT);
   
   cambioCordenadas(punto);

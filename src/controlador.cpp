@@ -68,13 +68,13 @@ void Controlador::procesarToqueVentanaInicio(TSPoint point)
     case BOTON_IR_A_SINTESIS:
       refVista.ventanaActual = 1;
       refVista.limpiarPantalla();
-      refVista.crearVentana1(refModel.caudal, refModel.caudal);      
+      refVista.crearVentana1(refModel.caudal, refModel.dosis);      
     break;
 
     case BOTON_IR_A_LIMPIEZA:
       refVista.ventanaActual = 40;
       refVista.limpiarPantalla();
-      refVista.crearVentanaLimpieza(refModel.caudal, refModel.caudal); 
+      refVista.crearVentanaLimpieza(refModel.caudal, refModel.dosisLimpieza); 
     break;
 
   }
@@ -85,23 +85,23 @@ void Controlador::procesarToqueVentana1(TSPoint point)
   switch (lugarDondeTocoVentana1(point))
   {
     case BOTON_MAS_CAUDAL:
-      refVista.cambiarCaudal(refModel.caudal, refModel.dosis,DELTA_CAUDAL);
-      refModel.caudal += DELTA_CAUDAL;      
+      refVista.cambiarCaudal(refModel.caudal,DELTA_CAUDAL);   
+      refModel.cambiarCaudal(DELTA_CAUDAL);
     break;
 
     case BOTON_MENOS_CAUDAL:
-      refVista.cambiarCaudal(refModel.caudal, refModel.dosis,-1*DELTA_CAUDAL);
-      refModel.caudal -= DELTA_CAUDAL; 
+      refVista.cambiarCaudal(refModel.caudal,-1*DELTA_CAUDAL);
+      refModel.cambiarCaudal(-1*DELTA_CAUDAL);
     break;
 
     case BOTON_MAS_DOSIS:
-      refVista.cambiarDosis(refModel.caudal, refModel.dosis,DELTA_DOSIS);
-      refModel.dosis += DELTA_DOSIS;  
+      refVista.cambiarDosis(refModel.dosis,DELTA_DOSIS);
+      refModel.cambiarDosis(DELTA_DOSIS); 
     break;
 
     case BOTON_MENOS_DOSIS:
-      refVista.cambiarDosis(refModel.caudal, refModel.dosis,-1*DELTA_DOSIS);
-      refModel.dosis -= DELTA_DOSIS; 
+      refVista.cambiarDosis(refModel.dosis,-1*DELTA_DOSIS);
+      refModel.cambiarDosis(-1*DELTA_DOSIS);
     break;
 
     case BOTON_REGRESAR:
@@ -127,12 +127,12 @@ switch (lugarDondeTocoVentana11(point))
   {
     case BOTON_MAS_DOSIS:
       refVista.cambiarDosisDescarte(refModel.dosisDescarte,DELTA_DOSIS_DESCARTE);
-      refModel.dosisDescarte += DELTA_DOSIS_DESCARTE;  
+      refModel.cambiarDosisDescarte(DELTA_DOSIS_DESCARTE);  
     break;
 
     case BOTON_MENOS_DOSIS:
       refVista.cambiarDosisDescarte(refModel.dosisDescarte,-1*DELTA_DOSIS_DESCARTE);
-      refModel.dosisDescarte -= DELTA_DOSIS_DESCARTE; 
+      refModel.cambiarDosisDescarte(-1*DELTA_DOSIS_DESCARTE);   
     break;
 
     case BOTON_SIGUIENTE:
@@ -149,12 +149,12 @@ switch (lugarDondeTocoVentana11(point))
 
     case BOTON_MAS_RELACION:
       refVista.cambiarRelacion(refModel.relacionCaudal, DELTA_RELACION);
-      refModel.relacionCaudal += DELTA_RELACION;
+      refModel.cambiarRelacion(DELTA_RELACION);
     break;
 
     case BOTON_MENOS_RELACION:
       refVista.cambiarRelacion(refModel.relacionCaudal, -1*DELTA_RELACION);
-      refModel.relacionCaudal -= DELTA_RELACION;
+      refModel.cambiarRelacion(-1*DELTA_RELACION);
         
   }
 }
@@ -184,23 +184,23 @@ void Controlador::procesarToqueLimpieza(TSPoint point)
   switch (lugarDondeTocoLimpieza(point))
   {
     case BOTON_MAS_CAUDAL:
-      refVista.cambiarCaudal(refModel.caudal, refModel.dosis,DELTA_CAUDAL);
-      refModel.caudal += DELTA_CAUDAL;  
+      refVista.cambiarCaudal(refModel.caudal,DELTA_CAUDAL);
+      refModel.cambiarCaudal(DELTA_CAUDAL);  
     break;
 
     case BOTON_MENOS_CAUDAL:
-      refVista.cambiarCaudal(refModel.caudal, refModel.dosis,-1*DELTA_CAUDAL);
-      refModel.caudal -= DELTA_CAUDAL;
+      refVista.cambiarCaudal(refModel.caudal, -1*DELTA_CAUDAL);
+      refModel.cambiarCaudal(-1*DELTA_CAUDAL);
     break;
 
     case BOTON_MAS_DOSIS:
-      refVista.cambiarDosis(refModel.caudal, refModel.dosis,DELTA_DOSIS);
-      refModel.dosis += DELTA_DOSIS;  
+      refVista.cambiarDosis(refModel.dosisLimpieza,DELTA_DOSIS);
+      refModel.cambiarDosisLimpieza(DELTA_DOSIS); 
     break;
 
     case BOTON_MENOS_DOSIS:
-      refVista.cambiarDosis(refModel.caudal, refModel.dosis,-1*DELTA_DOSIS);
-      refModel.dosis -= DELTA_DOSIS; 
+      refVista.cambiarDosis(refModel.dosisLimpieza,-1*DELTA_DOSIS);
+      refModel.cambiarDosisLimpieza(-1*DELTA_DOSIS); 
     break;
 
     case BOTON_INICIAR_LIMPIEZA:
@@ -240,10 +240,18 @@ char Controlador::lugarDondeTocoVentanaInicio(TSPoint point)
 
 }
 
+/*
+El sistema de coordenadas de la pantalla es el siguiente:
+            x
+    º------->
+    |
+    |   500 (en x) x 270 (en y)
+  y v  
+*/
 char Controlador::lugarDondeTocoVentana1(TSPoint point)
 {
   //Boton siguiente
-  if (point.x>280 && point.y > 280)
+  if (point.x>260 && point.y > 220)
   {
     return BOTON_SIGUIENTE;
   }
@@ -265,7 +273,7 @@ char Controlador::lugarDondeTocoVentana1(TSPoint point)
     return BOTON_MENOS_DOSIS;
   }
   //Boton regresar
- if (point.x<150 && point.y > 280)
+ if (point.x<150 && point.y > 220)
   {
     return BOTON_REGRESAR;
   }
@@ -279,7 +287,7 @@ char Controlador::lugarDondeTocoVentana1(TSPoint point)
 char Controlador::lugarDondeTocoVentana11(TSPoint point)
 {
   //Boton siguiente
-  if (point.x>280 && point.y > 280)
+  if (point.x>260 && point.y > 220)
   {
     return BOTON_SIGUIENTE;
   }
@@ -305,7 +313,7 @@ char Controlador::lugarDondeTocoVentana11(TSPoint point)
   }
 
   //Boton regresar
-  if (point.x<150 && point.y > 280)
+  if (point.x<150 && point.y > 220)
   {
     return BOTON_REGRESAR;
   }
@@ -319,11 +327,11 @@ char Controlador::lugarDondeTocoVentana11(TSPoint point)
 char Controlador::lugarDondeTocoVentana2(TSPoint point)
 {
   
-  if (point.x<150 && point.y > 280)
+  if (point.x<150 && point.y > 220)
   {
     return BOTON_REGRESAR;
   }
-  if (point.x>280 && point.y > 280)
+  if (point.x>260 && point.y > 220)
   {
     return BOTON_INICIAR;
   }
@@ -334,7 +342,7 @@ char Controlador::lugarDondeTocoVentana2(TSPoint point)
 char Controlador::lugarDondeTocoLimpieza(TSPoint point)
 {
  //Boton siguiente
-  if (point.x>280 && point.y > 280)
+  if (point.x>260 && point.y > 220)
   {
     return BOTON_INICIAR_LIMPIEZA;
   }
@@ -356,7 +364,7 @@ char Controlador::lugarDondeTocoLimpieza(TSPoint point)
     return BOTON_MENOS_DOSIS;
   }
   //Boton regresar
- if (point.x<170 && point.y > 275)
+ if (point.x<150 && point.y > 220)
   {
     return BOTON_REGRESAR;
   }

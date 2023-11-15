@@ -16,6 +16,7 @@ class Model{
   public:
     float caudal = 1;// [ml/min]
     float dosis = 1;// [ml]
+    float dosisLimpieza = 1;// [ml]
     float dosisDescarte = 0.2;// [ml/min]
     float relacionCaudal = 1; // [ml/min]
 
@@ -23,6 +24,11 @@ class Model{
     void dosificar(float tiempoDosis, float periodoPulsoM1, float periodoPulsoM2);
     void hacerDescarte(float tiempoDescarte,float periodoPulsoM1, float periodoPulsoM2);
     void limpiar();
+    void cambiarCaudal(float deltaCaudal);
+    void cambiarDosis(float deltaDosis);
+    void cambiarDosisLimpieza(float deltaDosis);
+    void cambiarDosisDescarte(float deltaDosis);
+    void cambiarRelacion(float deltaRelacion);
 };
 
 #endif

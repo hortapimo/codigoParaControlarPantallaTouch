@@ -1,5 +1,6 @@
 #include "model.h"
 #include "Arduino.h"
+#include "constG.h"
 
 const short int PIN_PULSO_M1 = 18;
 const short int PIN_DIRECCION_M1 = 19;
@@ -155,4 +156,59 @@ void Model::limpiar()
     float tiempoDosis = calcularTiempoDosis(dosis);
 
     dosificar(tiempoDosis, periodoPulsoM1, periodoPulsoM2);
+}
+
+void Model::cambiarCaudal(float deltaCaudal)
+{
+    if ((0<=caudal) && (caudal<= MAX_CAUDAL_GB))
+    {
+       if(!((caudal ==0) && (deltaCaudal<0))&&!((caudal==MAX_CAUDAL_GB)&&(deltaCaudal>0)))//para problemas en los bordes
+       {
+        caudal = int(caudal) + deltaCaudal;
+       } 
+    }
+}
+
+void Model::cambiarDosis(float deltaDosis)
+{
+    if (dosis>=DOSIS_MINIMA_GB)
+    {
+        if(!((dosis==DOSIS_MINIMA_GB)&&(deltaDosis<0)))
+        {
+            dosis = dosis + deltaDosis; 
+        }
+    }
+}
+
+void Model::cambiarDosisLimpieza(float deltaDosis)
+{
+    if (dosisLimpieza>=DOSIS_MINIMA_GB)
+    {
+        if(!((dosisLimpieza==DOSIS_MINIMA_GB)&&(deltaDosis<0)))
+        {
+            dosisLimpieza = dosisLimpieza + deltaDosis; 
+        }
+    }
+}
+
+void Model::cambiarDosisDescarte(float deltaDosis)
+{
+    if (dosisDescarte>=DOSIS_MINIMA_DESCARTE_GB)
+    {
+        if(!((dosisDescarte+deltaDosis<DOSIS_MINIMA_DESCARTE_GB)))
+        {
+            dosisDescarte = dosisDescarte + deltaDosis; 
+        }
+    }
+}
+
+void Model::cambiarRelacion(float deltaRelacion)
+{
+    if (relacionCaudal>=RELACION_MINIMA_GB)
+    {
+        if(!((relacionCaudal+deltaRelacion<RELACION_MINIMA_GB)))
+        {
+            relacionCaudal = relacionCaudal + deltaRelacion; 
+        }
+    }
 }

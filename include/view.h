@@ -43,7 +43,7 @@ class View{
 
     void splashScreen();
     void crearVentanaInicio();
-    void crearVentanaLimpieza(float caudal = CAUDAL_DEFAULT, float dosis = DOSIS_DEFAULT);
+    void crearVentanaLimpieza(float caudal = CAUDAL_DEFAULT, float dosisLimpieza = DOSIS_DEFAULT);
     void crearVentana1(float caudal = CAUDAL_DEFAULT, float dosis = DOSIS_DEFAULT);
     void crearVentana11(float dosisDescarte = DOSIS_DEFAULT_DESCARTE, float relacionCaudal = RC_DEFAULT);
     void crearVentana2(float caudal = CAUDAL_DEFAULT, float dosis = DOSIS_DEFAULT
@@ -51,8 +51,8 @@ class View{
     void crearVentana3();
     void crearVentanaLimpiando();
 
-    void cambiarCaudal(float caudal, float dosis, float delta);
-    void cambiarDosis(float caudal, float dosis, float delta);
+    void cambiarCaudal(float dosis, float delta);
+    void cambiarDosis(float dosis, float delta);
     void cambiarDosisDescarte(float dosis, float delta);
     void cambiarRelacion(float relacionCaudal, float delta);
 
