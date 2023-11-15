@@ -21,7 +21,6 @@ void setup()
 {
   controlador.refVista.pantalla.InitLCD();
   vista.iniciarGui();
-  Serial.begin(115200);
 }
 
 void loop() 

@@ -153,7 +153,7 @@ void Model::limpiar()
     float caudalLimpiezaMotor =caudal/2;
     float periodoPulsoM1 = calcularPeriodoPulso(caudalLimpiezaMotor, MOTOR_1);
     float periodoPulsoM2 = calcularPeriodoPulso(caudalLimpiezaMotor, MOTOR_2);
-    float tiempoDosis = calcularTiempoDosis(dosis);
+    float tiempoDosis = calcularTiempoDosis(dosisLimpieza);
 
     dosificar(tiempoDosis, periodoPulsoM1, periodoPulsoM2);
 }
