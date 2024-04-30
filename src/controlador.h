@@ -12,7 +12,7 @@ class Controlador{
     View& refVista;
 
     Controlador(Model& model, View& view)
-      : refModel(model), refVista(view)
+      : refModel(model), refVista(view) //Es necesario inicializar aso porque no se pueden inicializar referencias a vacio, esto hace que la def de arriba sea automatica. 
     {}
 
     void procesarToque(TSPoint point);
