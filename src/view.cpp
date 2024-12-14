@@ -19,13 +19,13 @@ void View::splashScreen()
 
   pantalla.fillScr(VGA_BLUE);
   pantalla.setFont(&FreeMonoBold18pt7b);
-  pantalla.print("Plamic Biotech S.A", CENTER, 150);
+  pantalla.print("Titulo", CENTER, 150);
   delay(2000);
   pantalla.fillScr(VGA_BLUE);
   pantalla.setFont(&FreeMonoBold18pt7b);
   pantalla.print("DCS", CENTER, 100);
   pantalla.setFont(&FreeMonoBold12pt7b);
-  pantalla.print("Drug Capsule Synthesizer", CENTER, 150);
+  pantalla.print("Nombre Equipo", CENTER, 150);
   pantalla.print("Model: 0.1", CENTER, 200);
   delay(3000);
 }
